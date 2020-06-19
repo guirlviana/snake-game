@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Jogo da cobrinha</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        canvas{
+            border: 4px solid rgb(105, 99, 99);
+            border-top: 13px solid rgb(105, 99, 99) ;
+            left:50%;
+            top:50%;
+            margin-left:-200px; /* Metade do valor da Largura */
+            margin-top:-200px; /* Metade da valor da Altura */
+            position:absolute;
+            width:400px; /* Valor da Largura */
+            height:400px; /* Valor da Altura */
+            box-shadow: 1px  4px 4px  rgb(146, 134, 117);
+            
+
+        }
+        
+        .container{
+            display: inline;
+        }
+        #title{
+         color: azure;
+         -webkit-text-stroke-width: 2px;
+        -webkit-text-stroke-color: #000;
+        font-size: 4em ;
+          margin-top: 50px;
+         text-align: center;
+         position: relative;
+           
+        }
+        body{
+            background-color: #29281bab;
+        }
+        #cont{
+            background-color: antiquewhite;
+        }
+        
+
+    </style>
+</head>
+<body>
+   
+    <div class="container">
+        <h1 id="title">SNAKE GAME</h1>  
+        
+    </div>
+    <canvas id="stage" width="400" height="400"></canvas>
+    <script type="text/javascript">
+       
+         window.onload = function(){
+ 
+            var stage = document.getElementById('stage');
+            var ctx = stage.getContext("2d");
+            document.addEventListener("keydown", keyPush)
+            setInterval(game, 70);
+
+            const vel = 1
+
+            var vx = vy = 0;
+            var px =  7;
+            var py = 10;
+            var lp = 20;
+            var qp = 20;
+            var ax = ay = 15;
+            
+             cont = 0;
+
+            var trail = [];
+            tail = 5;
+
+            function game(){
+                px += vx;
+                py += vy;
+                if (px < 0) {
+                  px = qp -1;  
+                }
+                if (px > qp -1) {
+                    px = 0;
+                }
+                if (py < 0 ) {
+                    py = qp -1;
+                }
+                if (py > qp -1) {
+                    py = 0
+                }
+            
+                ctx.fillStyle = "#363636";
+                ctx.fillRect(0,0, stage.width, stage.height);
+
+                ctx.fillStyle = "#9A32CD";
+                ctx.fillRect(ax*lp, ay*lp, lp,lp);
+
+                ctx.fillStyle = "#90EE90";
+                    for (var i = 0; i < trail.length; i++) {
+                        ctx.fillRect(trail[i].x*lp, trail[i].y*lp, lp,lp);
+                      if (trail[i].x == px && trail[i].y == py) {
+                        vx = vy = 0;
+                        tail = 6;
+                        
+                        
+                      } 
+                      
+                    }
+                    
+                     
+                    
+                trail.push({x:px, y:py})
+                    while (trail.length > tail) {
+                        trail.shift();
+                    }
+
+                    if (ax == px && py == ay){
+                       // ele n esta reiniando o contador
+                       tail++;
+                        cont = 1+ parseInt(cont);
+                       ax = Math.floor(Math.random()*qp); 
+                       ay = Math.floor(Math.random()*qp);
+                       
+                       
+                    }
+                    if (i > trail.length) {
+                        
+                        vx = vy = 0;
+                        tail = 5;
+                        alert("Oh não =C você perdeu, tente outra vez \n frutas coletadas ==> " + cont + ". ")
+                        
+                        cont = 0;
+                        
+                    }
+            }
+
+            function keyPush(event) {
+                switch (event.keyCode) {
+                    case 37: //left
+                        vx = -vel;
+                        vy = 0;
+                        break;
+                    case 65: //left
+                        vx = -vel;
+                        vy = 0;
+                        break;
+                    case 38 :  //up
+                        vx = 0;
+                        vy = -vel;
+                        break;
+                    case 87 :  //up
+                        vx = 0;
+                        vy = -vel;
+                        break;
+                    case 39: //right
+                        vx = vel;
+                        vy = 0;
+                        break;
+                    case 68: //right
+                        vx = vel;
+                        vy = 0;
+                        break;
+                    case 40: //down
+                        vx = 0;
+                        vy = vel;
+                        break;    
+                    case 83: //down
+                        vx = 0;
+                        vy = vel;
+                        break;    
+                    default:
+                        break;
+                }
+            }
+                
+                
+        }
+ 
+    </script>
+</body>
+</html>
